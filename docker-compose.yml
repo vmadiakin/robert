@@ -4,7 +4,7 @@ services:
     image: vitaliimadiakin/robert:$GITHUB_RUN_ID
     container_name: robert_app
     ports:
-      - "8000:80"
+      - "8000:8000"
     depends_on:
       - postgres
     environment:
