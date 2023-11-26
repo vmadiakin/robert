@@ -23,7 +23,7 @@ async def start(message: types.Message) -> None:
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text='Кнопка, которая ведёт в Telegram Web App',
-                              url='https://127.0.0.1:8000/bots/select_character')]
+                              url='cokguzel.su/bots/select_character')]
     ])
 
     await message.answer(f"{full_name_url}, я отправляю приветственное сообщение с объяснением того, что я делаю!",
