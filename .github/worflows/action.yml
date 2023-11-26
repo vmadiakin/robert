@@ -1,0 +1,72 @@
+name: Build and deploy workflow
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+    branches:
+      - main
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+      AMPLITUDE_API_KEY: ${{ secrets.AMPLITUDE_API_KEY }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD}}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+    steps:
+      - name: clone code
+        uses: actions/checkout@v2
+      - name: render .env
+        run: |
+          cp .env.example .env.temp
+          sed -e 's/\${\(.*\)}/\$\1/g' .env.temp | envsubst > .env
+          rm .env.temp
+      - name: print files
+        run: ls -la
+      - name: docker build
+        run: docker build -t vitaliimadiakin/robert:$GITHUB_RUN_ID .
+      - name: docker login
+        run: echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      - name: docker push
+        run: docker push vitaliimadiakin/robert:$GITHUB_RUN_ID
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build_and_push
+    env:
+      TOKEN: ${{ secrets.TOKEN }}
+      AMPLITUDE_API_KEY: ${{ secrets.AMPLITUDE_API_KEY }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD}}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+    steps:
+      - name: clone code
+        uses: actions/checkout@v2
+      - name: render config
+        run: |
+          mkdir robert_app
+          cat docker-compose.yml | envsubst > docker-compose.yml.temp
+          mv docker-compose.yml.temp docker-compose.yml
+      - name: clone files to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "docker-compose.yml"
+          target: "robert_app"
+      - name: run docker-compose
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            cd rlt_task_app
+            docker-compose up -d
