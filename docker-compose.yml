@@ -1,10 +1,10 @@
 version: '3.9'
 services:
   app:
-    image: vitaliimadiakin/robert:latest
+    image: vitaliimadiakin/robert:$GITHUB_RUN_ID
     container_name: robert_app
     ports:
-      - "8000:8000"
+      - "8080:80"
     depends_on:
       - postgres
     environment:
@@ -26,6 +26,3 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - pg_data:/var/lib/postgresql/data
-
-volumes:
-  pg_data:
