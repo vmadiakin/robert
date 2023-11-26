@@ -37,7 +37,9 @@ async def start_bot() -> None:
 
 if __name__ == '__main__':
     try:
-        asyncio.run(start_bot())
+        loop = asyncio.get_event_loop()
+        loop.create_task(start_bot())
+        loop.run_forever()
     except (KeyboardInterrupt, SystemExit):
         print('Bot stopped')
     except Exception as e:
