@@ -26,4 +26,10 @@ async def startup_event():
 
 if __name__ == "__main__":
     # Запуск веб-приложения с помощью Uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(
+        app,
+        host="0.0.0.0",
+        port=8000,
+        ssl_keyfile="/etc/letsencrypt/live/cokguzel.su/privkey.pem",
+        ssl_certfile="/etc/letsencrypt/live/cokguzel.su/fullchain.pem",
+    )
