@@ -99,6 +99,19 @@
       color: #27A7E7;
       opacity: 1;
     }
+
+  @media only screen and (min-width: 600px) {
+    /* Add styles for screens with a minimum width of 600px */
+    .background {
+      height: 100vh; /* Use full viewport height */
+    }
+
+    .icon1,
+    .icon2 {
+      width: 50%; /* Make icons take 50% width on larger screens */
+      max-width: none; /* Remove maximum width limit */
+    }
+  }
   </style>
 </head>
 <body>
