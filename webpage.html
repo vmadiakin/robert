@@ -5,9 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Your Page Title</title>
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
+    }
+
+    body {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
     }
 
     .background {
@@ -102,17 +117,17 @@
   </style>
 </head>
 <body>
-
-  <div class="background"></div>
-<div>
-    <div class="icon1"></div>
+  <div class="container">
+    <div class="background"></div>
+    <div>
+      <div class="icon1"></div>
       <div class="text1-1">Марио</div>
       <div class="text1-2">Персонаж</div>
 
-    <div class="icon2"></div>
+      <div class="icon2"></div>
       <div class="text2-1">Альберт Эйнштейн</div>
       <div class="text2-2">Физик-теоретик</div>
-
-</div>
+    </div>
+  </div>
 </body>
 </html>
