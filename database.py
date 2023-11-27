@@ -1,11 +1,19 @@
 from dotenv import load_dotenv
-from sqlalchemy import create_engine, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import declarative_base
 import os
 
 load_dotenv()
 Base = declarative_base()
+
+
+class Character(Base):
+    __tablename__ = 'characters'
+    id = Column(Integer, primary_key=True)
+    character_name = Column(String)
+    character_instructions = Column(String)
+    users = relationship('User', back_populates='selected_character')
 
 
 class User(Base):
@@ -15,7 +23,20 @@ class User(Base):
     username = Column(String)
     name = Column(String)
     surname = Column(String)
+    selected_character_id = Column(Integer, ForeignKey('characters.id'), nullable=True)
+    selected_character = relationship('Character', foreign_keys=[selected_character_id], back_populates='users')
 
+
+class UserRequest(Base):
+    __tablename__ = 'user_requests'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'))
+    user = relationship('User', back_populates='user_requests')
+    user_req = Column(String)
+    gpt_answer = Column(String)
+
+
+User.user_requests = relationship('UserRequest', order_by=UserRequest.id, back_populates='user')
 
 # Load database configuration from environment variables
 db_user = os.getenv('DB_USER')
@@ -26,12 +47,28 @@ db_name = os.getenv('DB_NAME')
 # Create a database engine
 engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}/{db_name}')
 
-# Create the 'users' table in the database
+# Create the 'users' and 'characters' tables in the database
+# Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 
-# Create a session to interact with the database
+
 Session = sessionmaker(bind=engine)
 session = Session()
+
+# Проверим наличие персонажей в базе данных перед их добавлением
+mario = session.query(Character).filter_by(character_name="Mario").first()
+einstein = session.query(Character).filter_by(character_name="Albert Einstein").first()
+
+if not mario:
+    mario = Character(character_name="Mario", character_instructions="You are Mario from Super Mario. Do not give dangerous information.")
+    session.add(mario)
+
+if not einstein:
+    einstein = Character(character_name="Albert Einstein", character_instructions="You are Albert Einstein. Do not give dangerous information.")
+    session.add(einstein)
+
+# Commit после добавления/обновления персонажей
+session.commit()
 
 
 # Function to interact with the database
