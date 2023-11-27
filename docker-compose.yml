@@ -14,6 +14,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       DB_HOST: ${DB_HOST}
       DB_NAME: ${DB_NAME}
+    volumes:
+      - /etc/letsencrypt/live/cokguzel.su:/ssl
 
   postgres:
     container_name: robert_pg
@@ -24,4 +26,3 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./pg_data:/var/lib/postgresql/data
-      - /etc/letsencrypt/live/cokguzel.su:/ssl
