@@ -57,13 +57,13 @@ session = Session()
 
 
 # Add Mario and Albert Einstein to the 'characters' table
-# mario = Character(character_name="Mario",
-#                   character_instructions="You are Mario from Super Mario. Do not give dangerous information.")
-# einstein = Character(character_name="Albert Einstein",
-#                      character_instructions="You are Albert Einstein. Do not give dangerous information.")
-#
-# session.add_all([mario, einstein])
-# session.commit()
+mario = Character(character_name="Mario",
+                  character_instructions="You are Mario from Super Mario. Do not give dangerous information.")
+einstein = Character(character_name="Albert Einstein",
+                     character_instructions="You are Albert Einstein. Do not give dangerous information.")
+
+session.add_all([mario, einstein])
+session.commit()
 
 
 # Function to interact with the database
