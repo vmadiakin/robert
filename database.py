@@ -51,18 +51,23 @@ engine = create_engine(f'postgresql://{db_user}:{db_password}@{db_host}/{db_name
 # Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 
-# Create a session to interact with the database
+
 Session = sessionmaker(bind=engine)
 session = Session()
 
+# Проверим наличие персонажей в базе данных перед их добавлением
+mario = session.query(Character).filter_by(character_name="Mario").first()
+einstein = session.query(Character).filter_by(character_name="Albert Einstein").first()
 
-# Add Mario and Albert Einstein to the 'characters' table
-mario = Character(character_name="Mario",
-                  character_instructions="You are Mario from Super Mario. Do not give dangerous information.")
-einstein = Character(character_name="Albert Einstein",
-                     character_instructions="You are Albert Einstein. Do not give dangerous information.")
+if not mario:
+    mario = Character(character_name="Mario", character_instructions="You are Mario from Super Mario. Do not give dangerous information.")
+    session.add(mario)
 
-session.add_all([mario, einstein])
+if not einstein:
+    einstein = Character(character_name="Albert Einstein", character_instructions="You are Albert Einstein. Do not give dangerous information.")
+    session.add(einstein)
+
+# Commit после добавления/обновления персонажей
 session.commit()
 
 
