@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <title>Your Page Title</title>
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+
+    .container {
+      display: flex;
+      flex-direction: column; /* Добавьте эту строку */
+      align-items: center; /* Добавьте эту строку */
+      justify-content: flex-start; /* Замените на center */
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      height: 100vh;
+      max-height: 100%;
+      margin: 0 auto;
     }
 
     .background {
@@ -99,32 +125,20 @@
       color: #27A7E7;
       opacity: 1;
     }
-
-  @media only screen and (min-width: 600px) {
-    /* Add styles for screens with a minimum width of 600px */
-    .background {
-      height: 100vh; /* Use full viewport height */
-    }
-
-    .icon1,
-    .icon2 {
-      width: 50%; /* Make icons take 50% width on larger screens */
-      max-width: none; /* Remove maximum width limit */
-    }
-  }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="background"></div>
+    <div>
+      <div class="icon1"></div>
+      <div class="text1-1">Марио</div>
+      <div class="text1-2">Персонаж</div>
 
-  <div class="background"></div>
-
-  <div class="icon1"></div>
-  <div class="text1-1">Марио</div>
-  <div class="text1-2">Персонаж</div>
-
-  <div class="icon2"></div>
-  <div class="text2-1">Альберт Эйнштейн</div>
-  <div class="text2-2">Физик-теоретик</div>
-
+      <div class="icon2"></div>
+      <div class="text2-1">Альберт Эйнштейн</div>
+      <div class="text2-2">Физик-теоретик</div>
+    </div>
+  </div>
 </body>
 </html>
