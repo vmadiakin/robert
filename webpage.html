@@ -17,12 +17,17 @@
 
     body {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
       min-height: 100vh;
     }
 
+
     .container {
+      display: flex;
+      flex-direction: column; /* Добавьте эту строку */
+      align-items: center; /* Добавьте эту строку */
+      justify-content: flex-start; /* Замените на center */
       position: relative;
       width: 100%;
       max-width: 1080px;
